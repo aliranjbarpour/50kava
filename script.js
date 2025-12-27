@@ -20,3 +20,126 @@ document.querySelectorAll('.faq-question').forEach(function(btn) {
     });
 });
 
+// افکت اسکرول برای هدر
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.main-header');
+  if (!header) return;
+  if (window.scrollY > 10) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+// مدیریت ساید منو موبایل
+const menuToggle = document.querySelector('.menu-toggle');
+const navbar = document.querySelector('.navbar');
+const closeMenu = document.querySelector('.close-menu');
+const overlay = document.querySelector('.side-overlay');
+
+// باز کردن ساید منو
+menuToggle && menuToggle.addEventListener('click', () => {
+    navbar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    menuToggle.classList.add('hide-menu-toggle');
+});
+// بستن ساید منو با ضربدر
+closeMenu && closeMenu.addEventListener('click', () => {
+    navbar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    menuToggle.classList.remove('hide-menu-toggle');
+});
+overlay && overlay.addEventListener('click', () => {
+    navbar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    menuToggle.classList.remove('hide-menu-toggle');
+});
+
+// مدیریت تاخیر بسته شدن ساب‌منو خدمات
+(function() {
+    var dropdown = document.querySelector('.has-dropdown');
+    var submenu = dropdown ? dropdown.querySelector('.dropdown-menu') : null;
+    var timer;
+    if(dropdown && submenu) {
+        dropdown.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+            submenu.style.display = 'block';
+        });
+        dropdown.addEventListener('mouseleave', function() {
+            timer = setTimeout(function() {
+                submenu.style.display = 'none';
+            }, 300);
+        });
+        submenu.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+            submenu.style.display = 'block';
+        });
+        submenu.addEventListener('mouseleave', function() {
+            timer = setTimeout(function() {
+                submenu.style.display = 'none';
+            }, 300);
+        });
+    }
+})();
+
+// بهبود نهایی: کنترل ساب‌منو فقط در موبایل با JS
+(function() {
+    function isMobile() {
+        return window.innerWidth <= 900;
+    }
+    var dropdown = document.querySelector('.has-dropdown');
+    var submenu = dropdown ? dropdown.querySelector('.dropdown-menu') : null;
+    var timer;
+    if(dropdown && submenu) {
+        dropdown.addEventListener('click', function(e) {
+            if(isMobile()) {
+                e.preventDefault();
+                if(submenu.style.display === 'block') {
+                    submenu.style.display = '';
+                } else {
+                    submenu.style.display = 'block';
+                }
+            }
+        });
+        dropdown.addEventListener('mouseenter', function() {
+            if(isMobile()) {
+                clearTimeout(timer);
+                submenu.style.display = 'block';
+            }
+        });
+        dropdown.addEventListener('mouseleave', function() {
+            if(isMobile()) {
+                timer = setTimeout(function() {
+                    submenu.style.display = '';
+                }, 300);
+            }
+        });
+        submenu.addEventListener('mouseenter', function() {
+            if(isMobile()) {
+                clearTimeout(timer);
+                submenu.style.display = 'block';
+            }
+        });
+        submenu.addEventListener('mouseleave', function() {
+            if(isMobile()) {
+                timer = setTimeout(function() {
+                    submenu.style.display = '';
+                }, 300);
+            }
+        });
+        document.addEventListener('click', function(e) {
+            if(isMobile() && !dropdown.contains(e.target)) {
+                submenu.style.display = '';
+            }
+        });
+        window.addEventListener('resize', function() {
+            if(!isMobile()) {
+                submenu.style.display = '';
+            }
+        });
+    }
+})();
+
